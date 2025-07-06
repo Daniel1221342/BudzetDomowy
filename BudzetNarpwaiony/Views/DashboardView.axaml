@@ -1,0 +1,41 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:BudzetNarpwaiony.ViewModels"
+             x:Class="BudzetNarpwaiony.Views.DashboardView"
+             x:DataType="vm:DashboardViewModel">
+	<StackPanel Margin="20">
+		<TextBlock Text="Pulpit Finansowy" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+
+		<UniformGrid Columns="2" Rows="2">
+
+			<Border Padding="25" Margin="10" Background="{DynamicResource MyCardBackgroundBrush}" CornerRadius="8" BoxShadow="0 4 8 0 #1A000000">
+				<StackPanel Spacing="10">
+					<TextBlock Text="Przychody w tym miesiącu" FontSize="16" Opacity="0.7"/>
+					<TextBlock Text="{Binding IncomeThisMonth, StringFormat='{}{0:0.00} zł'}" FontSize="32" FontWeight="Bold" Foreground="#4CAF50"/>
+				</StackPanel>
+			</Border>
+
+			<Border Padding="25" Margin="10" Background="{DynamicResource MyCardBackgroundBrush}" CornerRadius="8" BoxShadow="0 4 8 0 #1A000000">
+				<StackPanel Spacing="10">
+					<TextBlock Text="Wydatki w tym miesiącu" FontSize="16" Opacity="0.7"/>
+					<TextBlock Text="{Binding ExpensesThisMonth, StringFormat='{}{0:0.00} zł'}" FontSize="32" FontWeight="Bold" Foreground="#F44336"/>
+				</StackPanel>
+			</Border>
+
+			<Border Padding="25" Margin="10" Background="{DynamicResource MyCardBackgroundBrush}" CornerRadius="8" BoxShadow="0 4 8 0 #1A000000">
+				<StackPanel Spacing="10">
+					<TextBlock Text="Największy pojedynczy wydatek" FontSize="16" Opacity="0.7"/>
+					<TextBlock Text="{Binding BiggestExpense, StringFormat='{}{0:0.00} zł'}" FontSize="32" FontWeight="Bold" Foreground="#FF9800"/>
+				</StackPanel>
+			</Border>
+
+			<Border Padding="25" Margin="10" Background="{DynamicResource MyCardBackgroundBrush}" CornerRadius="8" BoxShadow="0 4 8 0 #1A000000">
+				<StackPanel Spacing="10">
+					<TextBlock Text="Top kategoria wydatków" FontSize="16" Opacity="0.7"/>
+					<TextBlock Text="{Binding TopSpendingCategory}" FontSize="32" FontWeight="Bold" Foreground="#03A9F4"/>
+				</StackPanel>
+			</Border>
+
+		</UniformGrid>
+	</StackPanel>
+</UserControl>
