@@ -1,0 +1,103 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:BudzetDomowy.ViewModels"
+             xmlns:converters="clr-namespace:BudzetDomowy.Converters"
+             x:Class="BudzetDomowy.Views.HistoryView"
+             x:DataType="vm:HistoryViewModel">
+
+	<UserControl.Resources>
+		<converters:AmountToBrushConverter x:Key="AmountToBrushConverter"/>
+	</UserControl.Resources>
+
+	<UserControl.Styles>
+		<Style Selector="ListBoxItem">
+			<Setter Property="Padding" Value="0"/>
+		</Style>
+		<Style Selector="ListBoxItem:nth-child(2n)">
+			<Setter Property="Background" Value="#383838"/>
+		</Style>
+		<Style Selector="ListBoxItem:pointerover">
+			<Setter Property="Background" Value="#4A4A4A"/>
+		</Style>
+		<Style Selector="ListBoxItem:selected">
+			<Setter Property="Background" Value="#0078D7"/>
+		</Style>
+	</UserControl.Styles>
+
+	<Grid Margin="20" RowDefinitions="Auto, Auto, *, Auto">
+
+		<TextBlock Grid.Row="0" Text="Historia transakcji" FontSize="22" FontWeight="Bold" Margin="0,0,0,15"/>
+
+		<Border Grid.Row="1" Padding="10" Margin="0,0,0,15" Background="{DynamicResource MyCardBackgroundBrush}" CornerRadius="8">
+			<StackPanel Orientation="Horizontal" Spacing="15" VerticalAlignment="Bottom">
+				<StackPanel Spacing="5">
+					<TextBlock Text="Szukaj po nazwie:" FontSize="11" Opacity="0.8"/>
+					<TextBox Text="{Binding SearchText, Mode=TwoWay}" Watermark="Wpisz nazwę..." Width="200"/>
+				</StackPanel>
+				<StackPanel Spacing="5">
+					<TextBlock Text="Filtruj po kategorii:" FontSize="11" Opacity="0.8"/>
+					<ComboBox ItemsSource="{Binding FilterCategories}"
+                              SelectedItem="{Binding SelectedFilterCategory, Mode=TwoWay}"
+                              Width="150"/>
+				</StackPanel>
+				<StackPanel Spacing="5">
+					<TextBlock Text="Data od:" FontSize="11" Opacity="0.8"/>
+					<DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay}" Width="140"/>
+				</StackPanel>
+				<StackPanel Spacing="5">
+					<TextBlock Text="Data do:" FontSize="11" Opacity="0.8"/>
+					<DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}" Width="140"/>
+				</StackPanel>
+			</StackPanel>
+		</Border>
+
+		<Border Grid.Row="2" Background="{DynamicResource MyCardBackgroundBrush}" CornerRadius="8" BoxShadow="0 4 8 0 #1A000000">
+			<ListBox ItemsSource="{Binding FilteredTransactions}" SelectedItem="{Binding SelectedTransaction}">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<Grid ColumnDefinitions="*,150,200,200" Margin="15,10" Background="Transparent">
+							<StackPanel>
+								<TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14"/>
+								<TextBlock Text="{Binding Category}" Opacity="0.7" FontSize="12"/>
+							</StackPanel>
+							<TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" VerticalAlignment="Center"
+                                       Foreground="{Binding Amount, Converter={StaticResource AmountToBrushConverter}}">
+								<TextBlock.Text>
+									<MultiBinding StringFormat="{}{0:0.00} {1}">
+										<Binding Path="Amount"/>
+										<Binding Path="$parent[UserControl].DataContext.Settings.CurrencySymbol"/>
+									</MultiBinding>
+								</TextBlock.Text>
+							</TextBlock>
+							<TextBlock Grid.Column="2" Text="{Binding Category}" VerticalAlignment="Center" Opacity="0.7"/>
+							<TextBlock Grid.Column="3" Text="{Binding Date, StringFormat='dd.MM.yyyy HH:mm'}" VerticalAlignment="Center" Opacity="0.7"/>
+						</Grid>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+		</Border>
+
+		<Button Grid.Row="3" Command="{Binding RemoveTransactionCommand}" Classes="danger"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,15,0,0">
+			<StackPanel Orientation="Horizontal" Spacing="8">
+				<PathIcon Data="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+				<TextBlock Text="Usuń zaznaczoną"/>
+			</StackPanel>
+		</Button>
+
+		<Border Grid.Row="0" Grid.RowSpan="4" Background="#000000A0" IsVisible="{Binding IsConfirmingDelete}">
+			<Border Padding="25" CornerRadius="10" Background="#3E3E3E"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    BoxShadow="0 0 20 5 Black">
+				<StackPanel Spacing="15">
+					<TextBlock Text="Czy na pewno chcesz usunąć tę transakcję?" FontSize="16"/>
+					<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+						<Button Content="Tak, usuń" Command="{Binding ConfirmDeleteCommand}" Classes="danger"/>
+						<Button Content="Anuluj" Command="{Binding CancelDeleteCommand}"/>
+					</StackPanel>
+				</StackPanel>
+			</Border>
+		</Border>
+
+	</Grid>
+</UserControl>

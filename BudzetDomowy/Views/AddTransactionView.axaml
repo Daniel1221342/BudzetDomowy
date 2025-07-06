@@ -1,0 +1,87 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:BudzetDomowy.ViewModels"
+             x:Class="BudzetDomowy.Views.AddTransactionView"
+             x:DataType="vm:AddTransactionViewModel">
+
+	<Grid ColumnDefinitions="320, *" RowDefinitions="Auto, *" Margin="10">
+
+		<StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Margin="10" Spacing="20">
+
+			<Border Padding="20" Background="{DynamicResource MyCardBackgroundBrush}" CornerRadius="8" BoxShadow="0 4 8 0 #1A000000">
+				<StackPanel Spacing="12">
+					<TextBlock Text="Nowa transakcja" FontSize="20" FontWeight="Bold"/>
+					<Rectangle Height="1" Fill="{DynamicResource CardStrokeColorDefaultBrush}" Margin="0,5"/>
+					<TextBlock Text="Nazwa:" Margin="0,5,0,0"/>
+					<TextBox Text="{Binding Name, Mode=TwoWay}" Watermark="np. Wypłata"/>
+					<TextBlock Text="Kwota (+ przychód, - wydatek):"/>
+					<NumericUpDown Value="{Binding Amount, Mode=TwoWay}" Increment="10.0" FormatString="0.00"/>
+					<TextBlock Text="Kategoria:"/>
+					<ComboBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}"/>
+					<Button Command="{Binding SubmitCommand}" HorizontalAlignment="Stretch" Classes="accent" Margin="0,10,0,0">
+						<StackPanel Orientation="Horizontal" Spacing="8">
+							<PathIcon Data="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+							<TextBlock Text="{Binding SubmitButtonText}"/>
+						</StackPanel>
+					</Button>
+				</StackPanel>
+			</Border>
+
+			<Border Padding="20" Background="{DynamicResource MyCardBackgroundBrush}" CornerRadius="8" BoxShadow="0 4 8 0 #1A000000">
+				<StackPanel Spacing="12">
+					<TextBlock Text="Miesięczny budżet" FontSize="16" FontWeight="SemiBold"/>
+					<NumericUpDown Value="{Binding MonthlyBudget, Mode=TwoWay}" FormatString="0.00" HorizontalAlignment="Stretch"/>
+				</StackPanel>
+			</Border>
+
+		</StackPanel>
+
+		<TextBlock Grid.Row="0" Grid.Column="1" Text="Podsumowanie" FontSize="20" FontWeight="Bold" Margin="10,10,0,10"/>
+		<UniformGrid Grid.Row="1" Grid.Column="1" Columns="1" Rows="3">
+
+			<Border Padding="25" Margin="10,0,0,10" Background="{DynamicResource MyCardBackgroundBrush}" CornerRadius="8" BoxShadow="0 4 8 0 #1A000000">
+				<StackPanel Spacing="10">
+					<TextBlock Text="Saldo Całkowite" FontSize="16" Opacity="0.7"/>
+					<TextBlock FontSize="32" FontWeight="Bold" Foreground="#4CAF50">
+						<TextBlock.Text>
+							<MultiBinding StringFormat="{}{0:0.00} {1}">
+								<Binding Path="TotalBalance"/>
+								<Binding Path="Settings.CurrencySymbol"/>
+							</MultiBinding>
+						</TextBlock.Text>
+					</TextBlock>
+				</StackPanel>
+			</Border>
+
+			<Border Padding="25" Margin="10" Background="{DynamicResource MyCardBackgroundBrush}" CornerRadius="8" BoxShadow="0 4 8 0 #1A000000">
+				<StackPanel Spacing="10">
+					<TextBlock Text="Wydatki w tym miesiącu" FontSize="16" Opacity="0.7"/>
+					<TextBlock FontSize="32" FontWeight="Bold" Foreground="#F44336">
+						<TextBlock.Text>
+							<MultiBinding StringFormat="{}{0:0.00} {1}">
+								<Binding Path="TotalExpenses"/>
+								<Binding Path="Settings.CurrencySymbol"/>
+							</MultiBinding>
+						</TextBlock.Text>
+					</TextBlock>
+				</StackPanel>
+			</Border>
+
+			<Border Padding="25" Margin="10" Background="{DynamicResource MyCardBackgroundBrush}" CornerRadius="8" BoxShadow="0 4 8 0 #1A000000">
+				<StackPanel Spacing="10">
+					<TextBlock Text="Pozostało z Budżetu" FontSize="16" Opacity="0.7"/>
+					<TextBlock FontSize="32" FontWeight="Bold" Foreground="#FF9800">
+						<TextBlock.Text>
+							<MultiBinding StringFormat="{}{0:0.00} {1}">
+								<Binding Path="RemainingBudget"/>
+								<Binding Path="Settings.CurrencySymbol"/>
+							</MultiBinding>
+						</TextBlock.Text>
+					</TextBlock>
+				</StackPanel>
+			</Border>
+
+		</UniformGrid>
+
+	</Grid>
+</UserControl>
